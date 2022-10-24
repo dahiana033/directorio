@@ -2,9 +2,10 @@
 let amigos=[];
 let btnGuardar=document.querySelector("#btnGuardar");
 let btnCancelar=document.querySelector("#btnCancelar");
-
+let mens=document.querySelector("#alerta");
 let lista=document.querySelector(".listaAmigos");
 let formulario=document.querySelector("#formulario");
+let found;
 
 pintar();
 
@@ -23,7 +24,9 @@ function pintar(){
         lista.innerHTML="";
         amigos.forEach((contacto,index)=>{
             let amigo=document.createElement("div");
-            amigo.innerHTML=`<p>${contacto.nombre}</p><button class="muestraDetalles"><input type="hidden" value="${contacto.telefono}" />Detalles</button><button class="eliminarContacto" indice="${index}">Borrar</button`;
+            amigo.innerHTML=`<p>${contacto.nombre}</p>
+            <button class="muestraDetalles"><input type="hidden" value="${contacto.telefono}" />
+            Detalles</button><button class="eliminarContacto" indice="${index}">Borrar</button`;
             lista.appendChild(amigo);
         });
         let botones=document.getElementsByClassName("muestraDetalles");
@@ -74,6 +77,30 @@ btnCancelar.addEventListener("click",(Event)=>{
     limpiar();
     Event.preventDefault();
 });
+var validation="";
+function validateForm(contacto) { 
+    
+    validation="";
+
+    if(contacto['nombre'] == "")
+    validation += "Es necesario poner el nombre ";
+    if(contacto['telefono'] == "")
+    validation += "Es necesario poner su número de telefono ";
+    if(contacto['correo'] == "")
+    validation += "Es necesario poner su correo ";
+    if(contacto['foto'] == "")
+    validation += "Es necesario agregar una foto ";
+    
+        if(validation=="")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
 
 btnGuardar.addEventListener("click",(Event)=>{
 
@@ -85,9 +112,29 @@ btnGuardar.addEventListener("click",(Event)=>{
         foto:formulario["foto"].value
     };
 
-    amigos.push(contacto);
-    limpiar();
-    pintar();
+    found = amigos.find(prueba => {
+        if (prueba.telefono == formulario[1].value) {
+            event.preventDefault();
+            return prueba;
+           
+        } 
+    })
+    console.log(found);
+       
+    if (found) {
+        console.log("inicio")
+       alerta.console.log("repetido");
+
+        alerta.classList.remove("oculto");
+        console.log("medio")
+    }
+    if(validateForm(contacto)){
+        amigos.push(contacto);
+        
+        limpiar();
+        pintar();
+        
+    }
     Event.preventDefault();
 });
 
